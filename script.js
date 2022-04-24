@@ -92,13 +92,13 @@ function randomPick(array) {
 function runRobot(state, robot, memory) {
     for(let turn = 0;; turn++) {
         if(state.parcels.length == 0) {
-            console.log(`Done in ${turn} turns`);
-            break;
+            //console.log(`Done in ${turn} turns`);
+            return turn;
         }
         let action = robot(state, memory);
         state = state.move(action.direction);
         memory = action.memory;
-        console.log(`Moved to ${action.direction}`);
+        //console.log(`Moved to ${action.direction}`);
     }
 }
 
@@ -121,7 +121,7 @@ function findRoute(graph, from, to) {
         let {at, route} = work[i];
         for(let place of graph[at]) {
             if(place == to) {
-                console.log(work);
+                //console.log(work);
                 return route.concat(place);
             }
             if(!work.some(w => w.at == place)) {
@@ -131,7 +131,7 @@ function findRoute(graph, from, to) {
     }
 }
 
-function goalOrientedRobot({place, parcels}, route) {
+function goalOrientedRobot({place, parcels}, route = []) {
     if(route.length == 0) {
         let parcel = parcels[0];
         if(parcel.place != place) {
@@ -143,22 +143,38 @@ function goalOrientedRobot({place, parcels}, route) {
     return {direction: route[0], memory: route.slice(1)};
 }
 
-runRobot(VillageState.random(), routeRobot);
-
-console.log(roadGraph);
+//console.log(roadGraph);
 //console.log(findRoute(roadGraph, "Alice's House", "Shop"));
 
-/*
-let work = [
-    {at: "Alice's House", route: []},
-    {at: "Bob's House", route: ["Bob's House"]},
-    {at: "Cabin", route: ["Cabin"]},
-    {at: "Post Office", route: ["Post Office"]},
-    {at: "Town Hall", route: ["Bob's House", "Town Hall"]},
-    {at: "Marketplace", route: ["Post Office", "Marketplace"]},
-    {at: "Daria's House", route: ["Bob's House", "Town Hall", "Daria's House"]}
-]
+//runRobot(VillageState.random(), routeRobot);
+//let r = runRobot(VillageState.random(), goalOrientedRobot);
+//console.log(`Done in ${r} turns`);
 
-let route = ["Bob's House", "Town Hall", "Shop"];
-*/
+
+
+/**********
+Exercises
+**********/
+//measuring a robot
+function compareRobots(robot1, robot2, numTasks = 100) {
+    //track how many steps to finish each task
+    r1Log = [];
+    r2Log = [];
+
+    for(i = 0; i < numTasks; i++) {
+        let village = VillageState.random();
+
+        //runRobot function modified to return number of steps to complete
+        r1Log.push(runRobot(village, robot1));
+        r2Log.push(runRobot(village, robot2));
+    }
+
+    let r1Avg = r1Log.reduce((a, b) => a + b) / r1Log.length;
+    let r2Avg = r2Log.reduce((a, b) => a + b) / r2Log.length;
+
+    console.log(`Robot 1 Average: ${r1Avg}`);
+    console.log(`Robot 2 Average: ${r2Avg}`);
+}
+
+compareRobots(routeRobot, goalOrientedRobot);
 
