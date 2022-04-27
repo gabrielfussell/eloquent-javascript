@@ -176,5 +176,60 @@ function compareRobots(robot1, robot2, numTasks = 100) {
     console.log(`Robot 2 Average: ${r2Avg}`);
 }
 
-compareRobots(routeRobot, goalOrientedRobot);
+//compareRobots(routeRobot, goalOrientedRobot);
 
+//Persistent Group
+//explanation: https://stackoverflow.com/questions/56160350/eloquent-javascript-persistent-group
+class PGroup {
+    constructor(group) {
+        this.group = group;
+    }
+
+    add(value) {
+        let newPGroup = new PGroup();
+        newPGroup.group = this.group.map(x => x); //copy the original w/no changes
+        newPGroup.group.push(value);
+        return newPGroup;
+    }
+
+    delete(value) {
+        let newPGroup = new PGroup();
+        //copy everything to the new group except value we're "deleting"
+        newPGroup.group = this.group.filter(x => x !== value);
+        return newPGroup;
+    }
+
+    has(value) {
+        if(this.group.indexOf(value) == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }    
+}
+
+PGroup.empty = new PGroup([]);
+
+/*
+let a = new PGroup();
+let b = a.add("Flaming Hot Cheetos");
+let c = a.add("Grilled Cheese");
+let d = b.add("Please eat some vegetables");
+
+console.log(a.group);
+console.log(b.group);
+console.log(c.group);
+console.log(d.group);
+console.log(a.group);
+*/
+
+//PGroup.empty on line 210 is what allows for this construction
+let e = PGroup.empty.add("January").add("February").add("March").add("April").add("May");
+
+let f = e.delete("January");
+let g = e.delete("February");
+
+console.log(e.group);
+console.log(f.group);
+console.log(g.group);
+console.log(e.group);
