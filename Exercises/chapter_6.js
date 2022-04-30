@@ -1,3 +1,6 @@
+/***********************
+A Vector Type
+************************/
 class Vec {
     constructor(x, y) {
         this.x = x;
@@ -23,6 +26,9 @@ let v2 = new Vec(3, 5);
 // console.log(v2);
 // console.log(v2.length);
 
+/***********************
+Groups
+************************/
 class Group {
     constructor() {
         this.group = [];

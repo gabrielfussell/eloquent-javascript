@@ -155,7 +155,9 @@ function goalOrientedRobot({place, parcels}, route = []) {
 /**********
 Exercises
 **********/
-//measuring a robot
+/***********************
+Measuring a Robot
+************************/
 function compareRobots(robot1, robot2, numTasks = 100) {
     //track how many steps to finish each task
     r1Log = [];
@@ -178,7 +180,9 @@ function compareRobots(robot1, robot2, numTasks = 100) {
 
 //compareRobots(routeRobot, goalOrientedRobot);
 
-//Persistent Group
+/***********************
+Persistent Group
+************************/
 //explanation: https://stackoverflow.com/questions/56160350/eloquent-javascript-persistent-group
 class PGroup {
     constructor(group) {

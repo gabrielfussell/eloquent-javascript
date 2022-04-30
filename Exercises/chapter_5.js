@@ -1,6 +1,8 @@
 //const SCRIPTS = require("./lang_scripts");
 
-//Combine array of arrays into one new array with reduce
+/***********************
+Flattening
+************************/
 let arr = [
     ["clementine", "raspberry", "strawberry"]
     , ["iceberg lettuce", "kale", "spinach"]
@@ -10,6 +12,9 @@ let arr = [
 let full = arr.reduce((prev, next) => prev.concat(next));
 //console.log(full);
 
+/***********************
+Your Own Loop
+************************/
 let obj = {
     name: "Florbo"
     , occupation: "Morbo"
@@ -44,6 +49,9 @@ function myLoop(start, test, update, body) {
 
 //myLoop(5, n => n > 0, n => n - 1, console.log);
 
+/***********************
+Everything
+************************/
 let numbers = [2, 4, 6, 8, 9];
 
 function every(array, test) {
@@ -91,7 +99,9 @@ let petNames = ["Milo", "Moon Moon", "Crabby"];
 
 //console.log("Did all elements pass the test? " + every2(petNames, element => element[0] == "M"));
 
-//Dominant writing direction
+/***********************
+Dominant Writing Direction
+************************/
 
 function countBy(items, groupName) {
     let counts = [];
