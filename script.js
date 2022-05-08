@@ -1,72 +1,38 @@
-/***********
-RETRY
-***********/
-class MultiplicatorUnitFailure extends Error {}
+/**************
+ REGULAR EXPRESSIONS
+ *************/
 
-function primitiveMultiply(x, y) {
-    //get random number between 1 and 10
-    let num = Math.floor(Math.random() * 10) + 1;
+ let re1 = new RegExp("abc");
+ let re2 = /abc/;
 
-    if(num >= 9) {
-        return x * y;
-    } else {
-        throw new MultiplicatorUnitFailure("This function fails 80% of the time for no reason.");
-    }  
-}
+ /*
+When using the second type of declaration, escape any forward
+slashes that are part of the pattern with a backslash.
+
+Backslashes that aren't part of any special character codes (like \n)
+will be preserved.
+ */
+
+//these are equivalent
+let re4 = new RegExp("ab/c");
+let re3 = /ab\/c/;
+
+//console.log(/abc/.test("abcde")); //passes the test
+//console.log(/abc/.test("abxde")); //fails the test
+
+//part of the expression matches any of the characters between the brackets
+//console.log(/[0123456789]/.test("in 1992"));
+//console.log(/[0-9]/.test("in 1992"));
 
 /*
-for(;;) {
-    try {
-        let n = primitiveMultiply(2, 5);
-        console.log("Multiplication successful: " + n);
-        break;
-    } catch (e) {
-        if(e instanceof MultiplicatorUnitFailure) {
-            console.log("The rogue multiply function is on the rampage again.");
-        } else {
-            throw e;
-        }
-    }
-}
+\d	Any digit character (same as [0-9])
+\w	An alphanumeric character (“word character”)
+\s	Any whitespace character (space, tab, newline, and similar)
+\D	A character that is not a digit
+\W	A non alphanumeric character
+\S	A nonwhitespace character
+.	Any character except for newline
 */
 
-/***********
-THE LOCKED BOX
-***********/
-
-const box = {
-    locked: true,
-    unlock() { this.locked = false; },
-    lock() { this.locked = true; },
-    _content: [],
-    get content() { 
-        if(this.locked) throw new Error("Locked!");
-        return this._content;
-    }
-};
-
-function withBoxUnlocked(body) {
-    let wasLocked = box.locked;
-    box.unlock();
-
-    try {
-        body();
-    } finally {
-        if(wasLocked) box.lock(); //re-lock the box only if it was locked to start with
-    }
-}
-
-withBoxUnlocked(function() {
-    box.content.push("gold piece");
-});
-
-//box.locked = false;
-try {
-    withBoxUnlocked(function() {
-        throw new Error("Pirates on the horizon! Abort!");
-    });
-} catch(e) {
-    console.log("Error raised:", e);
-}
-
-console.log(box.locked);
+// ^ after the opening bracket to match everything EXCEPT what's inside
+let re5 = /[^01]/;
