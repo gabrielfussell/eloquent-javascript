@@ -87,7 +87,26 @@ DATES AND TIMES
 *****************/
 let basicDateObject = new Date();
 //Months start at zero but days start at one!!!
-let specificDate = new Date(2005, 06, 01);
+let specificDate = new Date(2005, 06, 01); //July 1st, 2005
 
-console.log(specificDate);
-console.log(specificDate.getTime());
+//Timestamps are stored in # of milliseconds before or after midnight on January 1st, 1970 (unix time)
+let specificTime = specificDate.getTime();
+//console.log(specificTime);
+
+
+function dateFromString(string) {
+    //console.log(/(\d{1,2})-(\d{1,2})-(\d{4})/.exec(string));
+    let [_, month, day, year] = /(\d{1,2})-(\d{1,2})-(\d{4})/.exec(string);
+    return new Date(year, month - 1, day);
+}
+
+let myDate = dateFromString("1-30-2003");
+//console.log(myDate);
+
+/****************
+Word and String Boundaries 
+*****************/
+// ^ matches the start of the input and  $ matches the end
+let oneOrMoreDigits = /^\d+$/; //matches a string consisting ONLY of one or more digits
+let beginngingExclaimation = /^!/; //matches string starting with !
+let contradictory = /x^/; //can't match anything as x can't precede the string
