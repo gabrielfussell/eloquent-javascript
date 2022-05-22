@@ -82,9 +82,7 @@ let groupMatchMultiple = /(\d)+/;
 //console.log(groupMatchMultiple.exec("123"));
 
 
-/****************
-DATES AND TIMES 
-*****************/
+//***Dates and Times***
 let basicDateObject = new Date();
 //Months start at zero but days start at one!!!
 let specificDate = new Date(2005, 06, 01); //July 1st, 2005
@@ -103,10 +101,59 @@ function dateFromString(string) {
 let myDate = dateFromString("1-30-2003");
 //console.log(myDate);
 
-/****************
-Word and String Boundaries 
-*****************/
+//***Word and String Boundaries***
 // ^ matches the start of the input and  $ matches the end
 let oneOrMoreDigits = /^\d+$/; //matches a string consisting ONLY of one or more digits
 let beginngingExclaimation = /^!/; //matches string starting with !
 let contradictory = /x^/; //can't match anything as x can't precede the string
+
+// \b matches word boundaries, the change from a word character to a non word character or vice versa.
+// This can occur at any point in the string
+//https://stackoverflow.com/questions/7605198/how-does-b-work-when-using-regular-expressions
+let simpleCat = /cat/;
+//console.log(simpleCat.test("concatenate")); //true
+let isolatedCat = /\bcat\b/;
+//console.log(isolatedCat.test("concatenate")); //false
+
+// | functions as an OR operator
+let animalCount = /\b\d+ (pig|cow|chicken)s?\b/;
+//console.log(animalCount.test("15 pigs")); //true
+//console.log(animalCount.test("15 pigchickens")); //false
+
+
+//You can also use regular expressions in string's replace method
+let temple = "Borobudur";
+//console.log(temple.replace(/[ou]/g, "a")); // "g" is a tag meaning "global" and will replace all instances
+
+
+//You can refer to matched groups with the variables $1, $2, etc up to $9 and the whole match with $&.
+let names = "Liskov, Barbara\nMcCarthy, John\nWadler, Philip";
+//console.log(names);
+//console.log(names.replace(/(\w+), (\w+)/g, "$2 $1"));
+
+//You can also pass a function to the second argument of replace
+let agencies = "the fbi and cia";
+//console.log(agencies.replace(/\b(fbi|cia)\b/g, s => s.toUpperCase()));
+
+let stock = "1 lemon, 2 cabbages, and 101 eggs";
+//match must always be the first argument? then your regex groups are fed into the function arguments
+function minusOne(match, amt, unit) { 
+    //console.log(match);
+    amt = Number(amt) - 1;
+    if(amt == 1) {
+        //only one left, remove the "s"
+        unit = unit.slice(0, unit.length - 1);
+    } else if (amt == 0) {
+        amt = "no";
+    }
+    return amt + " " + unit;
+}
+//console.log(stock.replace(/(\d+) (\w+)/g, minusOne));
+
+
+//***Greed***
+function stripComments(code) {
+    return code.replace(/\/\/.*|\/\*[^]*\*\//g, "");
+}
+
+console.log(stripComments("1 + /* 2 */3"));
