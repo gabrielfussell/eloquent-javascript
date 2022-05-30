@@ -152,8 +152,35 @@ function minusOne(match, amt, unit) {
 
 
 //***Greed***
-function stripComments(code) {
+/*
+[^] matches everything not in an empty set - alternate way to match any character.
+    Doing it this way includes newline characters, which the period character would not.
+
+The repetition operators +, *, ? and {} are "greedy" and will first try to match all the way
+to the end of the string, and then backtrack.
+
+Putting a question mark after them makes them non-greedy: +?, *?, ??, {}?
+*/
+function stripCommentsGreedy(code) {
     return code.replace(/\/\/.*|\/\*[^]*\*\//g, "");
 }
 
-console.log(stripComments("1 + /* 2 */3"));
+// console.log(stripCommentsGreedy("1 + /* 2 */3")); //1 + 3
+// console.log(stripCommentsGreedy("x = 10; //ten!")); //x = 10;
+// console.log(stripCommentsGreedy("1 /* a */ + /* b */ 1")); //1 1
+
+function stripCommentsNonGreedy(code) {
+    return code.replace(/\/\/.*|\/\*[^]*?\*\//g, "");
+}
+
+// console.log(stripCommentsNonGreedy("1 + /* 2 */3")); //1 + 3
+// console.log(stripCommentsNonGreedy("x = 10; //ten!")); //x = 10;
+// console.log(stripCommentsNonGreedy("1 /* a */ + /* b */ 1")); //1 1
+
+
+
+//***Dynamically Create Regex Objects***
+let fullname = "Harry Dubois";
+let text = "Harry Dubois is a suspicious character";
+let regexp = new RegExp("\\b(" + fullname + ")\\b", "gi");
+console.log(text.replace(regexp, "_$1_"));
