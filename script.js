@@ -180,7 +180,16 @@ function stripCommentsNonGreedy(code) {
 
 
 //***Dynamically Create Regex Objects***
-let fullname = "Harry Dubois";
-let text = "Harry Dubois is a suspicious character";
-let regexp = new RegExp("\\b(" + fullname + ")\\b", "gi");
-console.log(text.replace(regexp, "_$1_"));
+let detective = "Harry Dubois";
+let text1 = "Harry Dubois is a suspicious character";
+let regexp1 = new RegExp("\\b(" + detective + ")\\b", "gi");
+// console.log(text1.replace(regexp1, "_$1_"));
+
+let screenName = "dea+hl[]rd";
+let text2 = "This dea+hl[]rd guy is super annoying.";
+let escaped = screenName.replace(/[\\[.+*?(){|^$]/g, "\\$&");
+let regexp2 = new RegExp("\\b" + escaped + "\\b", "gi");
+
+// console.log(escaped);
+// console.log(regexp2);
+// console.log(text2.replace(regexp2, "_$&_"));
