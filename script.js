@@ -34,6 +34,7 @@ let mySet = /[1234]/;
 \D	A character that is not a digit
 \W	A non alphanumeric character
 \S	A nonwhitespace character
+\b  Word boundary
 .	Any character except for newline
 */
 
@@ -125,6 +126,11 @@ let animalCount = /\b\d+ (pig|cow|chicken)s?\b/;
 let temple = "Borobudur";
 //console.log(temple.replace(/[ou]/g, "a")); // "g" is a tag meaning "global" and will replace all instances
 
+/*
+The global tag "g" should typically only be used in conjunction with the replace method and
+when you are manually manipulating the lastIndex property (see notes on this at the bottom of the file).
+*/
+
 
 //You can refer to matched groups with the variables $1, $2, etc up to $9 and the whole match with $&.
 let names = "Liskov, Barbara\nMcCarthy, John\nWadler, Philip";
@@ -193,3 +199,67 @@ let regexp2 = new RegExp("\\b" + escaped + "\\b", "gi");
 // console.log(escaped);
 // console.log(regexp2);
 // console.log(text2.replace(regexp2, "_$&_"));
+
+//indexOf can't be used with regular expressions, but the search method can
+let searchResult = "  word".search(/\S/);
+//console.log(searchResult);
+
+//***Searching at a given position in a string***
+/*
+If you have the "g" (gloabl) or "y" (sticky) flag set and are using the exec function then
+you can manually set the lastIndex method on the regular expression object
+to say where exec should start its search from. lastIndex is updated to the match location
+if one is found, or 0 if one could not be found.
+*/
+let pattern = /y/g;
+pattern.lastIndex = 3;
+let match = pattern.exec("xyzzy");
+//console.log(match.index); //4
+//console.log(pattern.lastIndex); //5. lastIndex was updated because a match was found
+
+
+//***Loop through matches***
+let input = "A string with 3 numbers in it... 42 and 88.";
+let num = /\b\d+\b/g;
+let match2;
+// while(match2 = num.exec(input)) {
+//     console.log("Found", match2[0], "at", match2.index);
+// }
+
+//***Parsing an INI file***
+function parseINI(string) {
+    //top level fields
+    let result = {};
+    let section = result;
+
+    string.split(/\r?\n/).forEach(line => {
+        let match;
+        if(match = line.match(/^(\w+)=(.*)$/)) { //properties
+            section[match[1]] = match[2];
+        } else if(match = line.match(/^\[(.*)\]$/)) { //section headers
+            section = result[match[1]] = {};
+        } else if(!/^\s*(;.*)?$/) {
+            throw new Error("Line '" + line + "' is not valid");
+        }
+    });
+    return result;
+}
+
+let s = `
+searchengine=https://duckduckgo.com/?q=$1
+spitefulness=9.7
+
+; comments are preceded by a semicolon...
+; each section concerns an individual enemy
+[larry]
+fullname=Larry Doe
+type=kindergarten bully
+website=http://www.geocities.com/CapeCanaveral/11451
+
+[davaeorn]
+fullname=Davaeorn
+type=evil wizard
+outputdir=/home/marijn/enemies/davaeorn
+`;
+
+console.log(parseINI(s));
